@@ -1,9 +1,11 @@
 # app/labelstudio_integration.py
 import requests
 import base64
+import ml_owls.router as router_module
 
-LABEL_STUDIO_URL = "http://labelstudio:8080/api/projects/1/import"
-LABEL_STUDIO_TOKEN = "YOUR_TOKEN"
+# Load label studio url from config and token from .env
+LABEL_STUDIO_URL = router_module.labelstudio_url
+LABEL_STUDIO_TOKEN = router_module.labelstudio_token
 
 def send_to_labelstudio(filename, file_bytes):
     base64_audio = base64.b64encode(file_bytes).decode("utf-8")
