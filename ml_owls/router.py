@@ -1,14 +1,18 @@
 import logging
 from fastapi import APIRouter, File, UploadFile, HTTPException
+from fastapi.params import Depends
 from fastapi.responses import JSONResponse
+from ml_owls.auth import get_api_key
 from ml_owls.model.onnx_model import predict
 import requests
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
+# These should be initialized from main.py
 onnx_session = None
 label_map = {}
+sample_rate = None
 labelstudio_url = ""
 labelstudio_token = ""
 
@@ -23,7 +27,7 @@ def readiness_check():
         return JSONResponse(status_code=503, content={"status": "not ready"})
     return {"status": "ready"}
 
-@router.post("/predict")
+@router.post("/predict", dependencies=[Depends(get_api_key)])
 async def predict_endpoint(file: UploadFile = File(...)):
     try:
         contents = await file.read()
@@ -33,7 +37,7 @@ async def predict_endpoint(file: UploadFile = File(...)):
         logger.error(f"Prediction error: {str(e)}")
         raise HTTPException(status_code=500, detail="Prediction failed")
 
-@router.post("/label")
+@router.post("/label", dependencies=[Depends(get_api_key)])
 async def label_endpoint(file: UploadFile = File(...)):
     try:
         contents = await file.read()
