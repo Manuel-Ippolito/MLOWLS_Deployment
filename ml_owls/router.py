@@ -1,8 +1,6 @@
-# app/router/endpoints.py
 import logging
 from fastapi import APIRouter, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
-from ml_owls.utils.audio import preprocess_audio
 from ml_owls.model.onnx_model import predict
 import io
 import requests
@@ -10,10 +8,8 @@ import requests
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-# Config & model will be initialized externally
 onnx_session = None
 label_map = {}
-sample_rate = 32000
 labelstudio_url = ""
 labelstudio_token = ""
 
@@ -21,12 +17,18 @@ labelstudio_token = ""
 def health_check():
     return {"status": "OK"}
 
+@router.get("/readiness")
+def readiness_check():
+    if onnx_session is None or not label_map:
+        logger.warning("Service not ready: model or label map not initialized.")
+        return JSONResponse(status_code=503, content={"status": "not ready"})
+    return {"status": "ready"}
+
 @router.post("/predict")
 async def predict_endpoint(file: UploadFile = File(...)):
     try:
         contents = await file.read()
-        audio = preprocess_audio(io.BytesIO(contents), sample_rate)
-        label, confidence = predict(onnx_session, audio, label_map)
+        label, confidence = predict(onnx_session, contents, label_map)
         return {"prediction": label, "confidence": confidence}
     except Exception as e:
         logger.error(f"Prediction error: {str(e)}")
