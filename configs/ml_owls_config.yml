@@ -1,0 +1,16 @@
+app:
+  name: "BirdCLEF Inference API"
+  host: "0.0.0.0"
+  port: 8000
+
+model:
+  path: "models/bird_model.onnx"
+  sample_rate: 32000
+  labels:
+    0: "species_a"
+    1: "species_b"
+    2: "species_c"
+
+labelstudio:
+  url: "http://labelstudio:8080/api/projects/1/import"
+  token: "YOUR_LABEL_STUDIO_TOKEN"
