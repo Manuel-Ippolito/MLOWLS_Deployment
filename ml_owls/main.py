@@ -1,8 +1,8 @@
 # app/main.py
 import logging
 from fastapi import FastAPI
-from ml_owls.router.endpoints import router, onnx_session, label_map, sample_rate, labelstudio_url, labelstudio_token
-from ml_owls.config import load_config
+from ml_owls.router import router, onnx_session, label_map, sample_rate, labelstudio_url, labelstudio_token
+from ml_owls.configs import load_config
 from ml_owls.model.onnx_model import load_model
 
 # Configure logging

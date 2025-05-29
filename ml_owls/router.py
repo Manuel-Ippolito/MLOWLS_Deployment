@@ -2,7 +2,6 @@ import logging
 from fastapi import APIRouter, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 from ml_owls.model.onnx_model import predict
-import io
 import requests
 
 router = APIRouter()
