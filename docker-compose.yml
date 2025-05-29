@@ -1,0 +1,18 @@
+# docker-compose.yml
+version: "3.12"
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - labelstudio
+
+  labelstudio:
+    image: heartexlabs/label-studio:latest
+    environment:
+      - LABEL_STUDIO_USERNAME=admin
+      - LABEL_STUDIO_PASSWORD=admin
+    ports:
+      - "8080:8080"

@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+python-multipart
+torch
+torchaudio
+librosa
+requests
+onnxruntime
+numpy
+pyyaml
