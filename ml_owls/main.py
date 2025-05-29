@@ -1,4 +1,5 @@
 import logging
+import os
 from fastapi import FastAPI
 import ml_owls.router as router_module
 from ml_owls.router import router
@@ -16,10 +17,8 @@ config = load_config()
 
 # Initialize model and config
 router_module.onnx_session = load_model(config["model"]["path"])
-router_module.label_map = {str(k): v for k, v in config["model"]["labels"].items()}
-router_module.sample_rate = config["model"]["sample_rate"]
 router_module.labelstudio_url = config["labelstudio"]["url"]
-router_module.labelstudio_token = config["labelstudio"]["token"]
+router_module.labelstudio_token = os.getenv("LABELSTUDIO_TOKEN", "")
 
 # Create FastAPI app
 app = FastAPI(

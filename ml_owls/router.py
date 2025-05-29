@@ -11,8 +11,6 @@ logger = logging.getLogger(__name__)
 
 # These should be initialized from main.py
 onnx_session = None
-label_map = {}
-sample_rate = None
 labelstudio_url = ""
 labelstudio_token = ""
 
@@ -22,7 +20,7 @@ def health_check():
 
 @router.get("/readiness")
 def readiness_check():
-    if onnx_session is None or not label_map:
+    if onnx_session is None:
         logger.warning("Service not ready: model or label map not initialized.")
         return JSONResponse(status_code=503, content={"status": "not ready"})
     return {"status": "ready"}
@@ -31,7 +29,7 @@ def readiness_check():
 async def predict_endpoint(file: UploadFile = File(...)):
     try:
         contents = await file.read()
-        label, confidence = predict(onnx_session, contents, label_map)
+        label, confidence = predict(onnx_session, contents)
         return {"prediction": label, "confidence": confidence}
     except Exception as e:
         logger.error(f"Prediction error: {str(e)}")
