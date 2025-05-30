@@ -1,9 +1,0 @@
-fastapi
-uvicorn
-onnxruntime
-numpy
-pyyaml
-requests
-python-multipart
-python-dotenv
-label-studio

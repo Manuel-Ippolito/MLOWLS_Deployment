@@ -1,29 +1,14 @@
-# Python stuff
-*.pyc
-*.pyo
+# Project-specific directories
+data/
+mlruns/
+outputs/
+experiments/
 
-
-/sh
-# OS generated files
-*.DS_Store
-*.DS_Store?
-
-# Other stuff
-.vscode
-
-# IDEs stuff
-.idea/
-.idea/*
-
-# Byte-compiled / optimized / DLL files
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
-
-# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -43,56 +28,24 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
 htmlcov/
 .tox/
 .nox/
-.coverage
-.coverage.*
 .cache
 nosetests.xml
 coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
-.pytest_cache/
-cover/
 
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-docs/build
-docs/_autosummary
-
-# PyBuilder
-.pybuilder/
-target/
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -101,29 +54,7 @@ target/
 profile_default/
 ipython_config.py
 
-# pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
-
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
+# Environment variables
 .env
 .venv
 env/
@@ -132,31 +63,40 @@ ENV/
 env.bak/
 venv.bak/
 
-# Spyder project settings
-.spyderproject
-.spyproject
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# Rope project settings
-.ropeproject
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# mkdocs documentation
-/site
+# Logs
+*.log
+logs/
 
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
+# Model artifacts
+*.pth
+*.pt
+*.ckpt
+*.h5
+*.pkl
+*.joblib
 
-# Pyre type checker
-.pyre/
+# MLflow
+mlruns/
+mlartifacts/
+models/
 
-# pytype static type analyzer
-.pytype/
-
-# Cython debug symbols
-cython_debug/
-
-# Project ignores
-data
-logs
-tmp*
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
