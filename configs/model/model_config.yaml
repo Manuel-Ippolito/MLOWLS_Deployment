@@ -1,0 +1,42 @@
+paths:
+  train_csv:        data/birdclef-2025/train.csv
+  train_audio_dir:  data/birdclef-2025/train_audio
+  taxonomy_csv:     data/birdclef-2025/taxonomy.csv
+  output_dir:       output
+
+audio:
+  sample_rate: 32000
+  n_mels: 128
+  n_fft: 1024
+  hop_length: 320
+  fmin: 20
+  fmax: 16000
+  segment_length: 30.0  # ← segment length in seconds used for training
+  overlap: 0.5  # ← overlap between segments in training, 0.5 means 50% overlap
+  max_segments_per_file: 5  # ← maximum number of segments per audio file
+
+training:
+  batch_size: 32
+  epochs: 10
+  learning_rate: 1e-3
+  weight_decay: 1e-4
+  val_fraction: 0.1    # ← hold out 10% of train.csv for validation
+  training_strategy: "cutmix"  # or "standard" or "mixup"
+  mixup_alpha: 0.4              # for mixup strategy
+  cutmix_alpha: 1.0             # for cutmix strategy
+  early_stopping_patience: 10
+  accuracy_top_k: 1             # for top-k accuracy
+  auc_average: "macro"          # AUC averaging strategy
+
+
+model:
+  backbone: efficientnet_b0
+  num_classes: 206
+  dropout: 0.3
+
+experiment:
+  name: birdclef25_robust_train
+  tags:
+    project: MLOWLS_Training
+    model_type: efficientnet
+    approach: robust_weak_labeling

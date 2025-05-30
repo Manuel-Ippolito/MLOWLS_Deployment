@@ -1,0 +1,15 @@
+{
+  "epoch": 10,
+  "final_train_metrics": {
+    "accuracy": 91.13638641146407,
+    "auc": 0.9983360683087222,
+    "loss": 1.2577789505609336
+  },
+  "final_val_metrics": {
+    "accuracy": 85.088515660463,
+    "auc": 0.987043334989517,
+    "loss": 1.504977808482405
+  },
+  "best_val_metric": 0.992638163187657,
+  "strategy": "standard"
+}

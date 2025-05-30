@@ -23,5 +23,5 @@ make install
 
 Run it locally:
 ```shell
-uvicorn ml_owls.main:app", "--host", "0.0.0.0", "--port", "8000"
+uvicorn ml_owls.main:app --host 0.0.0.0 --port 8000
 ```
