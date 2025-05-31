@@ -23,7 +23,39 @@ def health_check():
 
 @router.get("/readiness")
 def readiness_check():
-    return {"status": "ready"}
+    """
+    Readiness check endpoint to verify the application can serve requests.
+    Checks if the model is loaded and dependencies are available.
+    """
+    status = {"status": "ready", "checks": {}}
+    
+    # Check if the pipeline is initialized
+    if pipeline is None:
+        status["status"] = "not_ready"
+        status["checks"]["model"] = "not_loaded"
+    else:
+        status["checks"]["model"] = "loaded"
+    
+    # Check Label Studio connection if it's being used
+    if labelstudio_url and labelstudio_token:
+        try:
+            # Simple HEAD request to check if Label Studio is reachable
+            response = requests.head(
+                labelstudio_url.split('/api/')[0], 
+                timeout=2
+            )
+            if response.status_code < 400:
+                status["checks"]["labelstudio"] = "connected"
+            else:
+                status["status"] = "not_ready"
+                status["checks"]["labelstudio"] = f"error_status_{response.status_code}"
+        except Exception as e:
+            status["status"] = "not_ready"
+            status["checks"]["labelstudio"] = f"connection_error: {str(e)}"
+    else:
+        status["checks"]["labelstudio"] = "not_configured"
+    
+    return status
 
 
 @router.post("/predict")  #, dependencies=[Depends(get_api_key)])
