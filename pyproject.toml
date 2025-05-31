@@ -5,14 +5,15 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mlowls-training"
 version = "0.1.0"
-description = "Robust training pipeline for BirdCLEF 2025 with weak label learning"
+description = "Model training and deployment pipeline for BirdCLEF 2025"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
-    {name = "Christian Pala", email = "christian.pala@example.com"},
+    {name = "Christian Pala", email = "christian.pala@example.com",
+    name = "Manuel Ippolito", email = "manuel.ippolito@example.com"},
 ]
-keywords = ["machine-learning", "audio", "bird-classification", "weak-labels"]
+keywords = ["machine-learning", "audio", "bird-classification", "weak-labels", "mlops"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
