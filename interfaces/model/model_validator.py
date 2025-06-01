@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
-import torch
+if TYPE_CHECKING:
+    import torch
 
 
 class ModelValidator(ABC):
@@ -9,7 +10,7 @@ class ModelValidator(ABC):
 
     @abstractmethod
     def validate(
-        self, original_model: torch.nn.Module, converted_model_path: str, test_input: torch.Tensor
+        self, original_model: 'torch.nn.Module', converted_model_path: str, test_input: 'torch.Tensor'
     ) -> dict[str, Any]:
         """Validate converted model against original.
 

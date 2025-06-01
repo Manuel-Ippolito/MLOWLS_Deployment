@@ -3,9 +3,10 @@ Abstract training strategy interface.
 """
 
 from abc import ABC, abstractmethod
-from typing import Tuple
+from typing import Tuple, TYPE_CHECKING
 
-import torch
+if TYPE_CHECKING:
+    import torch
 
 
 class TrainingStrategy(ABC):
@@ -14,12 +15,12 @@ class TrainingStrategy(ABC):
     @abstractmethod
     def train_step(
         self,
-        model: torch.nn.Module,
-        batch: Tuple[torch.Tensor, torch.Tensor],
-        optimizer: torch.optim.Optimizer,
-        criterion: torch.nn.Module,
-        device: torch.device,
-    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        model: 'torch.nn.Module',
+        batch: Tuple['torch.Tensor', 'torch.Tensor'],
+        optimizer: 'torch.optim.Optimizer',
+        criterion: 'torch.nn.Module',
+        device: 'torch.device',
+    ) -> Tuple['torch.Tensor', 'torch.Tensor', 'torch.Tensor']:
         """Execute one training step.
 
         Args:

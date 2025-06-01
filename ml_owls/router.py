@@ -5,6 +5,7 @@ import types
 from fastapi import APIRouter, File, UploadFile, HTTPException, Depends
 from ml_owls.auth import get_api_key
 import requests
+import time
 
 # Change the import to use the pipeline_instance module
 from ml_owls.model.inference.pipeline_singleton import initialize_pipeline, labelstudio_token, labelstudio_url
@@ -16,9 +17,23 @@ logger = logging.getLogger(__name__)
 
 pipeline = initialize_pipeline()
 
-@router.get("/health")
-def health_check():
-    return {"status": "OK"}
+
+@router.get("/")
+def read_root():
+    return {"message": "FastAPI is up!"}
+
+
+@router.get("/liveness")
+def liveness_check():
+    """
+    Simple liveness check endpoint to verify the application is alive.
+    This endpoint can be used by load balancers or health check systems to ensure
+    the application is running and responsive.
+    """
+    return {
+        "status": "alive",
+        "timestamp": time.time()
+    }
 
 
 @router.get("/readiness")
@@ -29,31 +44,32 @@ def readiness_check():
     """
     status = {"status": "ready", "checks": {}}
     
-    # Check if the pipeline is initialized
+    # Check if the model inference pipeline is initialized
     if pipeline is None:
         status["status"] = "not_ready"
         status["checks"]["model"] = "not_loaded"
     else:
         status["checks"]["model"] = "loaded"
     
-    # Check Label Studio connection if it's being used
-    if labelstudio_url and labelstudio_token:
-        try:
-            # Simple HEAD request to check if Label Studio is reachable
-            response = requests.head(
-                labelstudio_url.split('/api/')[0], 
-                timeout=2
-            )
-            if response.status_code < 400:
-                status["checks"]["labelstudio"] = "connected"
-            else:
-                status["status"] = "not_ready"
-                status["checks"]["labelstudio"] = f"error_status_{response.status_code}"
-        except Exception as e:
-            status["status"] = "not_ready"
-            status["checks"]["labelstudio"] = f"connection_error: {str(e)}"
-    else:
-        status["checks"]["labelstudio"] = "not_configured"
+    # TODO: uncomment when label studio is ready
+    # # Check Label Studio connection if it's being used
+    # if labelstudio_url and labelstudio_token:
+    #     try:
+    #         # Simple HEAD request to check if Label Studio is reachable
+    #         response = requests.head(
+    #             labelstudio_url.split('/api/')[0], 
+    #             timeout=2
+    #         )
+    #         if response.status_code < 400:
+    #             status["checks"]["labelstudio"] = "connected"
+    #         else:
+    #             status["status"] = "not_ready"
+    #             status["checks"]["labelstudio"] = f"error_status_{response.status_code}"
+    #     except Exception as e:
+    #         status["status"] = "not_ready"
+    #         status["checks"]["labelstudio"] = f"connection_error: {str(e)}"
+    # else:
+    #     status["checks"]["labelstudio"] = "not_configured"
     
     return status
 

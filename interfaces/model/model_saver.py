@@ -3,16 +3,17 @@ Abstract model saver interface.
 """
 
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
-import torch
+if TYPE_CHECKING:
+    import torch
 
 
 class ModelSaver(ABC):
     """Abstract interface for saving models."""
 
     @abstractmethod
-    def save_model(self, model: torch.nn.Module, path: str, metadata: dict[str, Any]) -> None:
+    def save_model(self, model: 'torch.nn.Module', path: str, metadata: dict[str, Any]) -> None:
         """Save model to specified path with metadata.
 
         Args:
@@ -23,7 +24,7 @@ class ModelSaver(ABC):
         pass
 
     @abstractmethod
-    def load_model(self, model: torch.nn.Module, path: str) -> torch.nn.Module:
+    def load_model(self, model: 'torch.nn.Module', path: str) -> 'torch.nn.Module':
         """Load model from specified path.
 
         Args:
