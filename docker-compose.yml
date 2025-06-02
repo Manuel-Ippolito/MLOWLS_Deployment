@@ -1,42 +1,21 @@
 # docker-compose.yml
 
 services:
-  api:
-    build: .
+  all-in-one:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mlowls_all_in_one:latest
+    pull_policy: never
     ports:
-      - "8000:8000"
-    env_file:
-      - .env
-    environment:
-      - LABELSTUDIO_URL=http://labelstudio:8080/api/projects/1/import
-    depends_on:
-      labelstudio:
-        condition: service_healthy
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/liveness"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-
-  labelstudio:
-    image: heartexlabs/label-studio:latest
-    environment:
-      - LABEL_STUDIO_USERNAME=admin
-      - LABEL_STUDIO_PASSWORD=admin
-      - LABEL_STUDIO_DISABLE_SIGNUP_WITHOUT_LINK=true
-    ports:
-      - "8080:8080"
+      - "8000:8000"   # FastAPI
+      - "8080:8080"   # Label Studio
+      - "5000:5000"   # MLflow
     volumes:
       - label-studio-data:/label-studio/data
+      - mlflow-data:/mlflow
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 20s
 
 volumes:
   label-studio-data:
+  mlflow-data:

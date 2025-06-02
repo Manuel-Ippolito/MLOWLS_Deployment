@@ -1,4 +1,5 @@
 fastapi>=0.115.12
+dvc>=3.59.2
 uvicorn>=0.34.2
 numpy>=1.24.0,<2.0.0
 pyyaml>=6.0
