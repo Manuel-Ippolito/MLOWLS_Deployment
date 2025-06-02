@@ -19,7 +19,7 @@ labelstudio_port = 8080
 def initialize_pipeline():
     """Initialize the inference pipeline from config."""
     global pipeline, model_metadata_path, model_top_k, model_confidence_threshold, use_gpu
-    global labelstudio_url, labelstudio_port, labelstudio_token
+    global labelstudio_url, labelstudio_port
     
     config = load_config()
     

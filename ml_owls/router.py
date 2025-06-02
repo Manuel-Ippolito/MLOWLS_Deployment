@@ -122,8 +122,7 @@ async def predict_endpoint(file: UploadFile = File(...)):
 #     try:
 #         contents = await file.read()
 #         files = {"file": (file.filename, contents)}
-#         headers = {"Authorization": f"Token {labelstudio_token}"}
-#         response = requests.post(labelstudio_url, files=files, headers=headers)
+#         response = requests.post(labelstudio_url, files=files)
 #         return {"labelstudio_response": response.json()}
 #     except Exception as e:
 #         logger.error(f"LabelStudio error: {str(e)}")
