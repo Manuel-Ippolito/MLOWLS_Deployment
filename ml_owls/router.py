@@ -4,7 +4,6 @@ import logging
 import types
 from fastapi import APIRouter, File, UploadFile, HTTPException, Depends
 # from ml_owls.auth import get_api_key
-import requests
 import time
 
 # Change the import to use the pipeline_instance module

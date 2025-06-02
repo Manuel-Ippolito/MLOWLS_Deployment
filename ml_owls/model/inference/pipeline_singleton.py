@@ -14,7 +14,6 @@ model_confidence_threshold = 0.1
 use_gpu = False
 labelstudio_url = "http://labelstudio"
 labelstudio_port = 8080
-labelstudio_token = ""
 
 
 def initialize_pipeline():
@@ -31,7 +30,6 @@ def initialize_pipeline():
     use_gpu = config["model"]["use_gpu"]
     labelstudio_url = config["labelstudio"]["url"]
     labelstudio_port = config["labelstudio"]["port"]
-    labelstudio_token = os.getenv("LABELSTUDIO_TOKEN", "")
     
     # Initialize pipeline
     logger.info(f"Initializing inference pipeline with model metadata: {model_metadata_path}")
