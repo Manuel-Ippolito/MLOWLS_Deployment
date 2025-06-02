@@ -1,0 +1,4 @@
+[core]
+    remote = mlops
+['remote "mlops"']
+    url = ssh://MLOPSuser@57.151.108.196:/home/MLOPSuser/dvc-remote

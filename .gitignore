@@ -100,3 +100,9 @@ models/
 *.temp
 *.bak
 *.backup
+
+# DVC specific
+data/
+data_2024/
+*.key
+*.pem
