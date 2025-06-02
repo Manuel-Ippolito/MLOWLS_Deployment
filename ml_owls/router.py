@@ -3,12 +3,12 @@ import tempfile
 import logging
 import types
 from fastapi import APIRouter, File, UploadFile, HTTPException, Depends
-from ml_owls.auth import get_api_key
+# from ml_owls.auth import get_api_key
 import requests
 import time
 
 # Change the import to use the pipeline_instance module
-from ml_owls.model.inference.pipeline_singleton import initialize_pipeline, labelstudio_token, labelstudio_url
+from ml_owls.model.inference.pipeline_singleton import initialize_pipeline, labelstudio_url
 from ml_owls.model.inference.predict import predict_single_file
 from ml_owls.configs.config import load_config
 
@@ -53,7 +53,7 @@ def readiness_check():
     
     # TODO: uncomment when label studio is ready
     # # Check Label Studio connection if it's being used
-    # if labelstudio_url and labelstudio_token:
+    # if labelstudio_url:
     #     try:
     #         # Simple HEAD request to check if Label Studio is reachable
     #         response = requests.head(
@@ -118,14 +118,14 @@ async def predict_endpoint(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
 
 
-@router.post("/label", dependencies=[Depends(get_api_key)])
-async def label_endpoint(file: UploadFile = File(...)):
-    try:
-        contents = await file.read()
-        files = {"file": (file.filename, contents)}
-        headers = {"Authorization": f"Token {labelstudio_token}"}
-        response = requests.post(labelstudio_url, files=files, headers=headers)
-        return {"labelstudio_response": response.json()}
-    except Exception as e:
-        logger.error(f"LabelStudio error: {str(e)}")
-        raise HTTPException(status_code=500, detail="LabelStudio interaction failed")
+# @router.post("/label")  #, dependencies=[Depends(get_api_key)])
+# async def label_endpoint(file: UploadFile = File(...)):
+#     try:
+#         contents = await file.read()
+#         files = {"file": (file.filename, contents)}
+#         headers = {"Authorization": f"Token {labelstudio_token}"}
+#         response = requests.post(labelstudio_url, files=files, headers=headers)
+#         return {"labelstudio_response": response.json()}
+#     except Exception as e:
+#         logger.error(f"LabelStudio error: {str(e)}")
+#         raise HTTPException(status_code=500, detail="LabelStudio interaction failed")
