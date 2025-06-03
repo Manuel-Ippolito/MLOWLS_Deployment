@@ -1,7 +1,7 @@
 paths:
   train_csv:        data/birdclef-2025/train.csv
   train_audio_dir:  data/birdclef-2025/train_audio
-  taxonomy_csv:     data/birdclef-2025/taxonomy.csv
+  taxonomy_csv:     data/taxonomy.csv
   output_dir:       output
 
 audio:

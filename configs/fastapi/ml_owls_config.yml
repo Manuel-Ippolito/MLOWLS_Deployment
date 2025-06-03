@@ -12,6 +12,4 @@ model:
   use_gpu: false
 
 labelstudio:
-#  url: "http://labelstudio:8080/api/projects/1/import"
-  url: "http://labelstudio"
-  port: "8080"
+  url: "http://localhost:8080/"

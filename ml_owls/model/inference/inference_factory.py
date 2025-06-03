@@ -61,7 +61,7 @@ class InferenceFactory:
         try:
             # Use the taxonomy path from config
             paths_config = getattr(config, "paths", {})
-            taxonomy_path = paths_config.get("taxonomy_csv", "data/birdclef-2025/taxonomy.csv")
+            taxonomy_path = paths_config.get("taxonomy_csv", "data/taxonomy.csv")
 
             print(f"📋 Loading species names from: {taxonomy_path}")
 

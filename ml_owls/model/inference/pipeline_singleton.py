@@ -12,14 +12,13 @@ model_metadata_path = None
 model_top_k = 5
 model_confidence_threshold = 0.1
 use_gpu = False
-labelstudio_url = "http://labelstudio"
-labelstudio_port = 8080
+labelstudio_url = "http://localhost:8080/"
 
 
 def initialize_pipeline():
     """Initialize the inference pipeline from config."""
     global pipeline, model_metadata_path, model_top_k, model_confidence_threshold, use_gpu
-    global labelstudio_url, labelstudio_port
+    global labelstudio_url
     
     config = load_config()
     
@@ -29,7 +28,6 @@ def initialize_pipeline():
     model_confidence_threshold = config["model"]["confidence_threshold"]
     use_gpu = config["model"]["use_gpu"]
     labelstudio_url = config["labelstudio"]["url"]
-    labelstudio_port = config["labelstudio"]["port"]
     
     # Initialize pipeline
     logger.info(f"Initializing inference pipeline with model metadata: {model_metadata_path}")

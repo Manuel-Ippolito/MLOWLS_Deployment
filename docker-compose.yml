@@ -12,10 +12,14 @@ services:
       - "8080:8080"   # Label Studio
       - "5000:5000"   # MLflow
     volumes:
-      - label-studio-data:/label-studio/data
+      - label-studio-data:/data
       - mlflow-data:/mlflow
     restart: unless-stopped
+    environment:
+      PYTHONPATH: /app
 
 volumes:
   label-studio-data:
+    driver: local
   mlflow-data:
+    driver: local

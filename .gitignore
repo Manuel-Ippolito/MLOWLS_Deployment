@@ -107,3 +107,6 @@ data_2024/
 *.key
 *.pem
 /models
+
+# MLFlow specific
+*.db
