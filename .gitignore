@@ -106,3 +106,4 @@ data/
 data_2024/
 *.key
 *.pem
+/models
