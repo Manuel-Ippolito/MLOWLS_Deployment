@@ -1,59 +1,88 @@
-# ML Owls Project
+# 🦉 MLOWLS Deployment
 
-This repository contains the MLOps pipeline for Animal Species Identification from Audio.
-The project was made for the BirdCLEF-2025 Kaggle competition and for the ""Machine Learning in Data 2025"" course at SUPSI.
+Deployment pipeline for the **MLOWLS** inference API designed for the **BirdCLEF 2025 Kaggle Competition**, developed within the **Machine Learning in Data Operations 2025** course at SUPSI.
 
+---
 
-## Install project and dependencies:
+## 📚 Overview
 
-Create a new Python 3.12 environment:
+This deployment integrates:
+
+- 🌐 **FastAPI-based inference API**
+- 📊 **MLflow** for experiment tracking
+- 🔖 **Label Studio** for data labeling
+- 📦 **Data Version Control (DVC)**
+- 🐳 **Docker** for easy deployment
+
+---
+
+## 🚀 Quick Start
+
+### Clone and setup environment:
 
 ```shell
-conda create --name ml_owls python=3.12
-```
+git clone https://github.com/Manuel-Ippolito/MLOWLS_Deployment.git
+cd MLOWLS_Deployment
 
-Activate the conda environment just created:
-
-```shell
+conda create -n ml_owls python=3.12 -y
 conda activate ml_owls
-```
 
-Install dependencies on the environment from the pyproject.toml:
+make install
+🎯 Running the API
+Start the FastAPI inference service locally:
 
-```shell
-pip install --no-cache-dir -e ".[inference]"
-```
+shell
+Copy
+Edit
+uvicorn ml_owls.main:app --host 0.0.0.0 --port 8000
+🐳 Docker Deployment
+Run all integrated services via Docker Compose:
 
-## Deploy the whole project as a single Docker Container:
+shell
+Copy
+Edit
+docker-compose up --build -d
+Service URLs:
+FastAPI API: http://localhost:8000
 
-Very simply deploy the project in a container using one command:
-```shell
-docker compose up -d
-```
+MLflow UI: http://localhost:5000
 
-## Run the services singularly:
+Label Studio: http://localhost:8080
 
-API for Model inference:
+🔮 Prediction API Usage
+Example inference request:
 
-```shell
-uvicorn ml_owls.main:app --host 0.0.0.0 --port 8000 --workers 1
-```
+shell
+Copy
+Edit
+curl -X POST "http://localhost:8000/predict" \
+     -F "audio_file=@path/to/audio.ogg"
+Returns predicted bird species with confidence scores.
 
-Label Studio for Data Annotation:
+📂 Project Structure
+bash
+Copy
+Edit
+MLOWLS_Deployment/
+├── ml_owls/            # FastAPI inference API
+├── mlflow/             # MLflow setup
+├── labelstudio/        # Label Studio setup
+├── dvc/                # Data Version Control setup
+├── docker-compose.yml  # Docker Compose orchestration
+├── Makefile            # Automation scripts
+└── README.md           # Documentation
+📈 Experiment Tracking
+Access MLflow UI:
 
-```shell
-label-studio start --host 0.0.0.0 --port 8080 --data-dir /data"
-```
+http://localhost:5000
 
-MLFlow for model monitoring and experiment tracking:
+🛠️ Contributions
+Contributions welcome. Please submit clear and descriptive Pull Requests.
 
-```shell
-mlflow server --backend-store-uri sqlite:////mlflow/mlflow.db --default-artifact-root /mlflow/mlruns --host 0.0.0.0 --port 5000
-```
+📄 License
+MIT License.
 
-To get the data we used, please request us access and we'll provide indications to get it via DVC.
-Once you ahve received the necessary permissions and files, you can run:
+🙏 Acknowledgments
+SUPSI/ZHAW: Machine Learning in Data Operations 2025
 
-```shell
-dvc pull --verbose
-```
+BirdCLEF 2025 Kaggle Competition Dataset
