@@ -79,6 +79,6 @@ Contributions welcome. Please submit clear and descriptive Pull Requests.
 MIT License.
 
 🙏 Acknowledgments
-SUPSI/ZHAW: Machine Learning in Data Operations 2025
-
-BirdCLEF 2025 Kaggle Competition Dataset
+SUPSI/ZHAW: 
+- Machine Learning in Data Operations 2025
+- BirdCLEF 2025 Kaggle Competition Dataset
