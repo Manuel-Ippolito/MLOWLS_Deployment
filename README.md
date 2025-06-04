@@ -26,39 +26,33 @@ cd MLOWLS_Deployment
 
 conda create -n ml_owls python=3.12 -y
 conda activate ml_owls
-
+```
 make install
 🎯 Running the API
 Start the FastAPI inference service locally:
 
-shell
-Copy
-Edit
+```shell
 uvicorn ml_owls.main:app --host 0.0.0.0 --port 8000
+```
 🐳 Docker Deployment
 Run all integrated services via Docker Compose:
 
-shell
-Copy
-Edit
+```shell
 docker-compose up --build -d
 Service URLs:
 FastAPI API: http://localhost:8000
-
 MLflow UI: http://localhost:5000
-
 Label Studio: http://localhost:8080
-
+```
 🔮 Prediction API Usage
 Example inference request:
-
-shell
-Copy
-Edit
+```
 curl -X POST "http://localhost:8000/predict" \
      -F "audio_file=@path/to/audio.ogg"
+```
 Returns predicted bird species with confidence scores.
 
+```
 📂 Project Structure
 bash
 Copy
@@ -71,10 +65,14 @@ MLOWLS_Deployment/
 ├── docker-compose.yml  # Docker Compose orchestration
 ├── Makefile            # Automation scripts
 └── README.md           # Documentation
+```
+
 📈 Experiment Tracking
 Access MLflow UI:
 
+```
 http://localhost:5000
+```
 
 🛠️ Contributions
 Contributions welcome. Please submit clear and descriptive Pull Requests.
