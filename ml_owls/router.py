@@ -110,11 +110,18 @@ async def predict_endpoint(file: UploadFile = File(...)):
             # Add the prediction and confidence to Label Studio if configured
             if labelstudio_url:
                 try:
-                    label_id = send_to_labelstudio(file.filename, content)
-                    prediction["label_id"] = label_id
+                    # Extract the top prediction from the results
+                    if prediction and len(prediction) > 0:
+                        top_prediction = prediction[0]
+                        species_name = top_prediction.get('species', 'unknown')
+                        confidence = top_prediction.get('confidence', 0.0)
+                        result = send_to_labelstudio(file.filename, species_name, confidence)
+                        prediction["labelstudio_result"] = result
+                    else:
+                        prediction["labelstudio_result"] = {"error": "No predictions to send"}
                 except Exception as e:
                     logger.error(f"Failed to send to Label Studio: {str(e)}")
-                    prediction["label_id"] = "unknown"
+                    prediction["labelstudio_result"] = {"error": str(e)}
             
             # Return prediction results
             return {"prediction": prediction}

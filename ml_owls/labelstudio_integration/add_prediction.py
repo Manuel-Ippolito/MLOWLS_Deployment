@@ -1,5 +1,5 @@
 import logging
-from ml_owls.main import labelstudio_client, project
+from ml_owls.labelstudio_integration.labelstudio_singleton import labelstudio_client, project
 
 logger = logging.getLogger(__name__)
 
@@ -11,13 +11,12 @@ def send_to_labelstudio(filename: str, prediction: str, confidence: float):
         filename (str): Name of the audio file.
         prediction (str): Predicted species name (must match one of the labels in taxonomy).
         confidence (float): Confidence score of the prediction (0.0 to 1.0).
-        audio_url (str): URL to the audio file (optional).
   
     Returns:
         dict: Response containing task_id and prediction_id, or error information.
     """
     try:
-        if not project:
+        if not project or not labelstudio_client:
             return {"error": "Label Studio project not initialized"}
         
         # Create a task first
