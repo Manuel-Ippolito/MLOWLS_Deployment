@@ -57,7 +57,7 @@ def send_to_labelstudio(filename: str, prediction: str, confidence: float):
         # Create prediction using the SDK's PredictionValue
         prediction_value = PredictionValue(
             model_version="1.0.0",
-            score=confidence,
+            score=str(confidence),
             result=[predicted_label]
         )
         

@@ -13,6 +13,7 @@ from ml_owls.model.inference.pipeline_singleton import initialize_pipeline, labe
 from ml_owls.model.inference.predict import predict_single_file
 from ml_owls.configs.config import load_config
 from ml_owls.labelstudio_integration.add_prediction import send_to_labelstudio
+from utils.id_to_common_name import primary_id_to_common_name
 
 
 router = APIRouter()
@@ -106,6 +107,17 @@ async def predict_endpoint(file: UploadFile = File(...)):
                 audio_path=temp_path,
                 args=args
             )
+
+            # Convert species IDs to common names in the prediction results
+            if prediction and prediction.get('predictions'):
+                for pred in prediction['predictions']:
+                    try:
+                        species_id = int(pred.get('species_name', '0'))
+                        pred['species_name'] = primary_id_to_common_name(species_id)
+                    except (ValueError, TypeError) as e:
+                        logger.warning(f"Could not convert species ID {pred.get('species_name')} to common name: {e}")
+                        pred['species_name'] = f"Unknown Species (ID: {pred.get('species_name', 'N/A')})"
+
 
             # Add the prediction and confidence to Label Studio if configured
             labelstudio_result = None
