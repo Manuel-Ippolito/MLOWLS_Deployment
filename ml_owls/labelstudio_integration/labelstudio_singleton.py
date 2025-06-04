@@ -2,6 +2,8 @@ import logging
 import os
 from label_studio_sdk.client import LabelStudio
 
+from ml_owls.configs.config import load_config
+
 logger = logging.getLogger(__name__)
 
 # Global variables for Label Studio client and project
@@ -11,11 +13,13 @@ project = None
 def initialize_labelstudio():
     """Initialize Label Studio client and project."""
     global labelstudio_client, project
+
+    config = load_config()
     
     try:
         # Connect to the Label Studio API
         labelstudio_client = LabelStudio(
-            base_url=os.getenv("LABELSTUDIO_URL"), 
+            base_url=config["labelstudio"]["url"], 
             api_key=os.getenv("LABELSTUDIO_TOKEN")
         )
         

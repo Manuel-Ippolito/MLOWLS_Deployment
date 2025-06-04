@@ -1,5 +1,5 @@
 import logging
-from ml_owls.labelstudio_integration.labelstudio_singleton import labelstudio_client, project
+from label_studio_sdk.label_interface.objects import PredictionValue
 
 logger = logging.getLogger(__name__)
 
@@ -15,45 +15,54 @@ def send_to_labelstudio(filename: str, prediction: str, confidence: float):
     Returns:
         dict: Response containing task_id and prediction_id, or error information.
     """
+    from ml_owls.labelstudio_integration.labelstudio_singleton import labelstudio_client
     try:
+        project = labelstudio_client.projects.get(id=1)
         if not project or not labelstudio_client:
             return {"error": "Label Studio project not initialized"}
-        
-        # Create a task first
+
+        # Create a task 
         task_data = {
             "data": {
-                "audio": f"/audio/{filename}",
+                "audio": f"data/local-files/?d=data/{filename}",
                 "filename": filename
-            },
-            "predictions": [
-                {
-                    "model_version": "1.0.0",
-                    "score": confidence,
-                    "result": [
-                        {
-                            "from_name": "label",
-                            "to_name": "audio",
-                            "type": "choices",
-                            "value": {
-                                "choices": [prediction]
-                            }
-                        }
-                    ]
-                }
-            ]
+            }
         }
-        
-        # Create the task
         task = labelstudio_client.tasks.create(
             project=project.id,
             **task_data
         )
         
-        logger.info(f"Successfully created task with prediction in Label Studio. Task ID: {task.id}")
+        # Get the label interface to create proper prediction format
+        li = project.get_label_interface()
+        
+        # Create predicted label using the control tag name (should match your label config)
+        predicted_label = li.get_control('label').label(
+            choices=[prediction],
+            start=0.0,
+            end=100.0,
+            labels=[prediction]
+        )
+        
+        # Create prediction using the SDK's PredictionValue
+        prediction_value = PredictionValue(
+            model_version="1.0.0",
+            score=confidence,
+            result=[predicted_label]
+        )
+        
+        # Add prediction to the task
+        prediction_response = labelstudio_client.predictions.create(
+            task=task.id,
+            **prediction_value.model_dump()
+        )
+        
+        logger.info(f"Successfully created task and prediction in Label Studio. Task ID: {task.id}, Prediction ID: {prediction_response.id}")
         
         return {
             "success": True,
             "task_id": task.id,
+            "prediction_id": prediction_response.id,
             "filename": filename,
             "prediction": prediction,
             "confidence": confidence

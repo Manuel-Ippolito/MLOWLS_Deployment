@@ -10,7 +10,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT=/app \
     LABELSTUDIO_TOKEN="insert_your_token_here" 
 
-# Install system dependencies
+    # Install system dependencies
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
       supervisor \

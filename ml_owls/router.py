@@ -108,23 +108,36 @@ async def predict_endpoint(file: UploadFile = File(...)):
             )
 
             # Add the prediction and confidence to Label Studio if configured
+            labelstudio_result = None
             if labelstudio_url:
                 try:
                     # Extract the top prediction from the results
-                    if prediction and len(prediction) > 0:
-                        top_prediction = prediction[0]
-                        species_name = top_prediction.get('species', 'unknown')
+                    if prediction and prediction.get('predictions'):
+                        top_prediction = prediction['predictions'][0]  # Get the highest confidence prediction
+                        species_name = top_prediction.get('species_name', 'unknown')
                         confidence = top_prediction.get('confidence', 0.0)
-                        result = send_to_labelstudio(file.filename, species_name, confidence)
-                        prediction["labelstudio_result"] = result
+                        labelstudio_result = send_to_labelstudio(filename=file.filename,
+                                                                 prediction=species_name,
+                                                                 confidence=confidence)
+                        
+                        # Check if the result indicates an error
+                        if not labelstudio_result.get("success", False):
+                            logger.warning(f"Label Studio integration failed: {labelstudio_result.get('error', 'Unknown error')}")
+                        else:
+                            logger.info(f"Successfully sent prediction to Label Studio: {species_name}")
                     else:
-                        prediction["labelstudio_result"] = {"error": "No predictions to send"}
+                        labelstudio_result = {"success": False, "error": "No predictions to send"}
+                        logger.warning("No predictions available to send to Label Studio")
                 except Exception as e:
                     logger.error(f"Failed to send to Label Studio: {str(e)}")
-                    prediction["labelstudio_result"] = {"error": str(e)}
+                    labelstudio_result = {"success": False, "error": str(e)}
             
-            # Return prediction results
-            return {"prediction": prediction}
+            # Return prediction results with Label Studio integration info
+            response = {"prediction": prediction}
+            if labelstudio_result:
+                response["labelstudio_result"] = labelstudio_result
+                
+            return response
         
         finally:
             # Clean up the temporary file
