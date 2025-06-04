@@ -51,14 +51,15 @@ def send_to_labelstudio(filename: str, prediction: str, confidence: float):
             choices=[prediction],
             start=0.0,
             end=100.0,
-            labels=[prediction]
+            labels=[prediction],
+            score=round(confidence, 2)
         )
         
         # Create prediction using the SDK's PredictionValue
         prediction_value = PredictionValue(
             model_version="1.0.0",
-            score=str(confidence),
-            result=[predicted_label]
+            result=[predicted_label],
+            score=round(confidence, 2)
         )
         
         # Add prediction to the task

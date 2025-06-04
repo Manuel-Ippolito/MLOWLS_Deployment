@@ -130,7 +130,7 @@ async def predict_endpoint(file: UploadFile = File(...)):
                         confidence = top_prediction.get('confidence', 0.0)
                         labelstudio_result = send_to_labelstudio(filename=file.filename,
                                                                  prediction=species_name,
-                                                                 confidence=confidence)
+                                                                 confidence=float(confidence))
                         
                         # Check if the result indicates an error
                         if not labelstudio_result.get("success", False):
