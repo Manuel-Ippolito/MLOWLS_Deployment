@@ -1,6 +1,8 @@
 import logging
 from label_studio_sdk.label_interface.objects import PredictionValue
 
+from utils.labelstudio_integration.find_audio import find_ogg_file_path
+
 logger = logging.getLogger(__name__)
 
 def send_to_labelstudio(filename: str, prediction: str, confidence: float):
@@ -20,11 +22,19 @@ def send_to_labelstudio(filename: str, prediction: str, confidence: float):
         project = labelstudio_client.projects.get(id=1)
         if not project or not labelstudio_client:
             return {"error": "Label Studio project not initialized"}
+        
+        # Locate the audio file
+        audio_path = "/data/local-files/?d=" + find_ogg_file_path(filename=filename)
+        if not audio_path:
+            return {
+                "success": False,
+                "error": f"Audio file {filename} not found in the dataset."
+            }
 
         # Create a task 
         task_data = {
             "data": {
-                "audio": f"data/local-files/?d=data/{filename}",
+                "audio": audio_path,
                 "filename": filename
             }
         }
