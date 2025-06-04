@@ -19,6 +19,7 @@ def send_to_labelstudio(filename: str, prediction: str, confidence: float):
     """
     from ml_owls.labelstudio_integration.labelstudio_singleton import labelstudio_client
     try:
+        logger.info(f"Sending prediction to Label Studio for file: {filename}")
         project = labelstudio_client.projects.get(id=1)
         if not project or not labelstudio_client:
             return {"error": "Label Studio project not initialized"}
@@ -26,6 +27,7 @@ def send_to_labelstudio(filename: str, prediction: str, confidence: float):
         # Locate the audio file
         audio_path = "/data/local-files/?d=" + find_ogg_file_path(filename=filename)
         if not audio_path:
+            logger.error(f"Audio file {filename} not found in the dataset.")
             return {
                 "success": False,
                 "error": f"Audio file {filename} not found in the dataset."

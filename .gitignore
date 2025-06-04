@@ -102,6 +102,8 @@ models/
 *.backup
 
 # DVC specific
+.dvc/
+*.dvc
 data/
 data_2024/
 *.key
@@ -109,4 +111,5 @@ data_2024/
 /models
 
 # MLFlow specific
+mlflow/
 *.db

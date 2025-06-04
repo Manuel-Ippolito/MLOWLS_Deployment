@@ -10,7 +10,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT=/app \
     LABELSTUDIO_TOKEN="insert_your_token_here" 
 
-    # Install system dependencies
+# Install system dependencies
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
       supervisor \
@@ -44,8 +44,6 @@ RUN mkdir -p /app/data /app/mlflow/mlruns /opt/venv /home/appuser/.ssh \
 
 # Switch back to appuser for remaining operations
 USER appuser
-
-# TODO: Give permissions for labelstudio to be able to read subfolders of data
 
 # Copy SSH key
 COPY --chown=appuser:appuser MLOPS_key.pem /home/appuser/.ssh/MLOPS_key.pem

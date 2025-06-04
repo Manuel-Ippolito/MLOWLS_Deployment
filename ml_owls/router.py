@@ -13,7 +13,7 @@ from ml_owls.model.inference.pipeline_singleton import initialize_pipeline, labe
 from ml_owls.model.inference.predict import predict_single_file
 from ml_owls.configs.config import load_config
 from ml_owls.labelstudio_integration.add_prediction import send_to_labelstudio
-from utils.id_to_common_name import primary_id_to_common_name
+from utils.common.id_to_common_name import primary_id_to_common_name
 
 
 router = APIRouter()
@@ -84,6 +84,7 @@ async def predict_endpoint(file: UploadFile = File(...)):
 
     try:
         # Create a temporary file to save the uploaded audio
+        logger.info(f"Received file for prediction: {file.filename}")
         with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(file.filename)[1]) as temp_file:
             # Read uploaded file content
             content = await file.read()
@@ -94,6 +95,7 @@ async def predict_endpoint(file: UploadFile = File(...)):
         try:
             # Create a simple namespace to pass as args
             config = load_config()
+            logger.info(f"Using model config: {config['model']['config_path']}")
             args = types.SimpleNamespace(
                 aggregate="max",  # Aggregation method
                 config=config["model"]["config_path"],  # Path to model config
@@ -102,11 +104,13 @@ async def predict_endpoint(file: UploadFile = File(...)):
             )
             
             # Process the audio file using the inference pipeline
+            logger.info(f"Starting prediction for file: {file.filename}")
             prediction = predict_single_file(
                 pipeline=pipeline,
                 audio_path=temp_path,
                 args=args
             )
+            logger.info(f"Prediction completed for file: {file.filename}")
 
             # Convert species IDs to common names in the prediction results
             if prediction and prediction.get('predictions'):
@@ -120,6 +124,7 @@ async def predict_endpoint(file: UploadFile = File(...)):
 
 
             # Add the prediction and confidence to Label Studio if configured
+            logger.info("Preparing to send prediction to Label Studio if configured")
             labelstudio_result = None
             if labelstudio_url:
                 try:

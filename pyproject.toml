@@ -3,17 +3,17 @@ requires = ["setuptools>=64", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mlowls-training"
+name = "ML Owls
 version = "0.1.0"
-description = "Model training and deployment pipeline for BirdCLEF 2025"
+description = "MLOps Pipeline for Bird Species Identification from Audio"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
     {name = "Dyuman Bulloni", email = "dyuman.bulloni@supsi.ch"},
     {name = "Carlo Grigioni", email = "carlo.grigioni@supsi.ch"},
-    {name = "Christian Pala", email = "christian.pala@student.supsi.ch"},
     {name = "Manuel Ippolito", email = "manuel.ippolito@student.supsi.ch"},
+    {name = "Christian Pala", email = "christian.pala@student.supsi.ch"},
 ]
 keywords = ["machine-learning", "audio", "bird-classification", "weak-labels", "mlops"]
 classifiers = [
