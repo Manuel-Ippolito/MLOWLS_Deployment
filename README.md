@@ -1,6 +1,6 @@
 # 🦉 MLOWLS Deployment
 
-Deployment pipeline for the **MLOWLS** inference API designed for the **BirdCLEF 2025 Kaggle Competition**, developed within the **Machine Learning in Data Operations 2025** course at SUPSI.
+Deployment pipeline for the **MLOWLS** inference API designed for the **BirdCLEF 2025 Kaggle Competition**, developed within the **Machine Learning in Data Operations 2025** course at SUPSI/ZHAW.
 
 ---
 
@@ -11,7 +11,7 @@ This deployment integrates:
 - 🌐 **FastAPI-based inference API**
 - 📊 **MLflow** for experiment tracking
 - 🔖 **Label Studio** for data labeling
-- 📦 **Data Version Control (DVC)**
+- 📦 **Data Version Control (DVC)** for data and models versioning
 - 🐳 **Docker** for easy deployment
 
 ---
@@ -73,9 +73,11 @@ http://localhost:5000
 ```
 
 🛠️ Contributions
+
 Contributions welcome. Please submit clear and descriptive Pull Requests.
 
 📄 License
+
 MIT License.
 
 🙏 Acknowledgments
