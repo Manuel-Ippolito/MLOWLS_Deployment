@@ -112,7 +112,7 @@ async def predict_endpoint(file: UploadFile = File(...)):
             if prediction and prediction.get('predictions'):
                 for pred in prediction['predictions']:
                     try:
-                        species_id = int(pred.get('species_name', '0'))
+                        species_id = pred.get('species_name', '0')
                         pred['species_name'] = primary_id_to_common_name(species_id)
                     except (ValueError, TypeError) as e:
                         logger.warning(f"Could not convert species ID {pred.get('species_name')} to common name: {e}")
