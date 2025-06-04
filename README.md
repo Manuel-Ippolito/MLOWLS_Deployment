@@ -52,11 +52,9 @@ curl -X POST "http://localhost:8000/predict" \
 ```
 Returns predicted bird species with confidence scores.
 
-```
+```shell
 📂 Project Structure
-bash
-Copy
-Edit
+
 MLOWLS_Deployment/
 ├── ml_owls/            # FastAPI inference API
 ├── mlflow/             # MLflow setup
